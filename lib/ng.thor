@@ -1,6 +1,6 @@
 ##!/usr/bin/env ruby
 require "thor"
-
+require '/Users/abhishekyadav/code/ngrep-proj/ngrep/ngrep.rb'
 
 ## After changes to this file, run: thor update ng.thor
 
@@ -10,24 +10,36 @@ class Ng < Thor
 	option :pre, :type => :numeric, :aliases => :a
 	option :post, :type => :numeric, :aliases => :b 
 	def find(term)
-		require '/Users/abhishekyadav/code/ngrep-proj/ngrep/ngrep.rb'
 		puts Ngrep::Search.find(term, options)
 	end
 
 	desc "rehash", "rebuild the index"
 	def rehash
-		Ngrep::Build.new(filename: "/path/to/file").run
+		#Ngrep::Build.new(filename: "/path/to/file").run
+		Ngrep::Build.rehash
 	end
 
-	desc "add FILE", "adds file to watch list"
-	def add(file)
-		puts "adding #{file}"
+	desc "watch FILE", "adds FILE to watch list"
+	def watch(file)
+		Ngrep::WatchList.add file
+		puts "Added #{file} to watch list. Do rehash too"
 	end
 
-	desc "remove FILE", "removes file from watch list"
-	def remove(file)
-		puts "removing #{file}"
+	desc "unwatch FILE", "removes file from watch list"
+	option :all, :type => :boolean, :aliases => :a
+	def unwatch(file)
+		if options[:all]
+			Ngrep::WatchList.clear
+		else
+			Ngrep::WatchList.remove file
+			puts "Removed #{file} from watch list. Do rehash too"
+		end		
 	end
+
+	desc "watchlist", "shows the watch list"
+	def watchlist
+		puts Ngrep::WatchList.show	
+	end	
 
 	#default_task :search ## doesn't work right
 end

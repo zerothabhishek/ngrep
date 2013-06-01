@@ -7,6 +7,21 @@ module Ngrep
 
 		attr_reader :current_project, :current_date, :storage
 
+		def self.rehash
+			Ngrep::Hash.new.clear
+			watch_list = Ngrep::WatchList.new
+			watch_list.load
+			watch_list.list.each do |watched_file|
+				watched_file.chomp!
+				begin
+					Ngrep::Build.new(filename: watched_file).run 
+					puts "rehashed #{watched_file}"
+				rescue => e
+					puts "rehash failed for #{watched_file}: #{e}"
+				end
+			end
+		end
+
 		def initialize(args)
 			@filename = args[:filename] 
 			@current_date = ""

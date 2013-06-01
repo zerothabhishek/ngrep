@@ -17,9 +17,7 @@ module Ngrep
 		
 		def load
 			unless File.exists?(data_file)
-				File.open(data_file,"w") do |f|
-					f.write "{}"
-				end
+				clear
 			end
 			@hash = JSON.parse File.read data_file
 		end
@@ -31,6 +29,12 @@ module Ngrep
 		def push(key, value)
 			@hash[key] = [] unless @hash[key]
 			@hash[key].push value
+		end
+
+		def clear
+			File.open(data_file, "w") do |f|
+				f.write "{}"
+			end
 		end
 		
 	end
