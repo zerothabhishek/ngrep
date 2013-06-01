@@ -1,11 +1,12 @@
-require 'json'
+#require 'json'
 
 module Ngrep
 	class Search
 
 		#DataFile = "/Users/abhishekyadav/code/ngrep-proj/ngrep/data/hash.json"
 		def data_file
-			"/Users/abhishekyadav/code/ngrep-proj/ngrep/data/hash.json"
+			#"/Users/abhishekyadav/code/ngrep-proj/ngrep/data/hash.json"
+			Ngrep::Config[:data_file]
 		end
 
 		def initialize

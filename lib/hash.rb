@@ -1,27 +1,31 @@
-require 'json'
+#require 'json'
 
 module Ngrep
 	class Hash
 
-		DataFile = "/Users/abhishekyadav/code/ngrep-proj/ngrep/data/hash.json"
+		#DataFile = "/Users/abhishekyadav/code/ngrep-proj/ngrep/data/hash.json"
 
 		attr_reader :hash
 
 		def initialize(args=nil)
 			@hash = {}
 		end
+
+		def data_file
+			Ngrep::Config[:data_file]
+		end
 		
 		def load
-			unless File.exists?(DataFile)
-				File.open(DataFile,"w") do |f|
+			unless File.exists?(data_file)
+				File.open(data_file,"w") do |f|
 					f.write "{}"
 				end
 			end
-			@hash = JSON.parse File.read DataFile
+			@hash = JSON.parse File.read data_file
 		end
 
 		def save
-			File.write(DataFile, JSON.dump(@hash))
+			File.write(data_file, JSON.dump(@hash))
 		end
 
 		def push(key, value)

@@ -1,6 +1,6 @@
-require 'active_support/time'
+#require 'active_support/time'
 
-load File.expand_path("../hash.rb", __FILE__)
+#load File.expand_path("../hash.rb", __FILE__)
 
 module Ngrep
 	class Build
