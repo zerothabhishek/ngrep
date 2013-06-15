@@ -1,15 +1,20 @@
 ##!/usr/bin/env ruby
 require "thor"
-require '/Users/abhishekyadav/code/ngrep-proj/ngrep/ngrep.rb'
+
 
 ## After changes to this file, run: thor update ng.thor
 
 class Ng < Thor
 
+	## thor ng find term
 	desc "find TERM", "search the given term"
 	option :pre, :type => :numeric, :aliases => :a
 	option :post, :type => :numeric, :aliases => :b 
 	def find(term)
+		puts "loading..."; t0=Time.new
+		require '/Users/abhishekyadav/code/ngrep-proj/ngrep/application.rb'
+		t1=Time.now; puts "loaded in #{t1-t0} time"
+		puts "searching..."
 		puts Ngrep::Search.find(term, options)
 	end
 

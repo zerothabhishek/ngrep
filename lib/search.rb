@@ -11,9 +11,13 @@ module Ngrep
 			
 		end
 
-		def run(term)
+		def run_old(term)
 			load_index
 			@index[term]
+		end
+
+		def run(term)
+			Ngrep::Word.where(value: term)
 		end
 
 		def load_index
@@ -24,7 +28,7 @@ module Ngrep
 			pre = options[:pre].to_i
 			post = options[:post].to_i
 			results = self.run(term) || []
-			results.map{|r| result_string(r, pre, post) }.join("\n")
+			results.map{|r| result_string(r, pre, post) }.join("\n")			
 		end
 
 		def result_string(r, pre, post)
@@ -41,20 +45,25 @@ module Ngrep
 		end
 
 		def result_project(result)
-			result["project"].to_s
+			#result["project"].to_s
+			result.project
 		end
 
 		def result_date(result)
-			result["date"].to_s
+			#result["date"].to_s
+			result.date.to_s
 		end
 
 		def result_line_no(result)
-			result["line_number"].to_s
+			#result["line_number"].to_s
+			result.line_number.to_s
 		end
 
 		def result_lines(result, pre=0, post=0)
-			file_path = result["file_path"]
-			line_no   = result["line_number"]
+			#file_path = result["file_path"]
+			#line_no   = result["line_number"]
+			file_path = result.file_path      # ["file_path"]
+			line_no   = result.line_number    # ["line_number"]			
 			lines_from_file(file_path, line_no, pre, post).map do |line|
 				line.gsub("\n", '')  ## remove the line-break at the end
 			end.join("\n")

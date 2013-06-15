@@ -36,12 +36,18 @@ module Ngrep
 				parse_date(line)
 				words = get_words(line)
 				words.each do |word|
-					@storage.push(word, {
-						line_number: i,
-						date: @current_date,
+					#@storage.push(word, {
+					#	line_number: i,
+					#	date: @current_date,
+					#	project: @current_project,
+					#	file_path: @filename
+					#})
+					Word.create(
+						value: word, 
+						line_number: i, 
+						date: @current_date, 
 						project: @current_project,
-						file_path: @filename
-					})
+						file_path: @filename )
 				end
 			end
 			finalize
