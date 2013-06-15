@@ -12,7 +12,8 @@ module Ngrep
 		end
 
 		def self.config
-			database_path = File.join Ngrep.root, "db", "ngrep.sqlite3"
+			#database_path = File.join Ngrep.root, "db", "ngrep.sqlite3"
+			database_path = Ngrep::Config[:db_file]
 			{adapter: 'sqlite3', database: database_path}			
 		end
 		

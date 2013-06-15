@@ -79,7 +79,11 @@ module Ngrep
 		end
 
 		def self.find(term, options={})
-			Ngrep::Search.new.find(term, options)
+			t0=Time.now
+			res = Ngrep::Search.new.find(term, options)
+			t1=Time.now
+			puts "Search time: #{t1-t0}"
+			res
 		end
 
 	end	
