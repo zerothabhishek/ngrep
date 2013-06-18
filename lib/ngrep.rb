@@ -23,12 +23,12 @@ t1=Time.now
 puts "active_record load time: #{t1-t0}"
 
 
-require File.expand_path("../lib/config.rb", __FILE__)
-require File.expand_path("../lib/word.rb", __FILE__)
-require File.expand_path("../lib/hash.rb", __FILE__)
-require File.expand_path("../lib/build.rb", __FILE__)
-require File.expand_path("../lib/search.rb", __FILE__)
-require File.expand_path("../lib/watch_list.rb", __FILE__)
+require File.expand_path("../ngrep/config.rb", __FILE__)
+require File.expand_path("../ngrep/word.rb", __FILE__)
+require File.expand_path("../ngrep/hash.rb", __FILE__)
+require File.expand_path("../ngrep/build.rb", __FILE__)
+require File.expand_path("../ngrep/search.rb", __FILE__)
+require File.expand_path("../ngrep/watch_list.rb", __FILE__)
 require File.expand_path("../db.rb", __FILE__)
 
 module Ngrep
