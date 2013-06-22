@@ -1,3 +1,4 @@
-require File.expand_path("../../application.rb", __FILE__)
+require File.expand_path("../../ngrep.rb", __FILE__)
+Ngrep::Db.connect
 
 ActiveRecord::Migration.add_index(:words, :value)

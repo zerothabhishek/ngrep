@@ -20,7 +20,8 @@ class Ng < Thor
 	def rehash
 		require 'ngrep'
 		Ngrep::Db.connect
-		Ngrep::Build.rehash
+		watch_list = Ngrep::WatchList.load
+		Ngrep::Build.rehash(watch_list)
 	end
 
 	desc "watch FILE", "adds FILE to watch list"

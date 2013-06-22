@@ -7,7 +7,20 @@ module Ngrep
 
 		attr_reader :current_project, :current_date, :storage
 
-		def self.rehash
+		def self.rehash(watch_list)
+			Ngrep::Word.all.map(&:destroy)
+			watch_list.each do |watched_file|
+				begin
+					watched_file.chomp!
+					Ngrep::Build.new(filename: watched_file).run
+					puts "rehashed #{watched_file}"
+				rescue => e
+					puts "rehash failed for #{watched_file}: #{e}"
+				end
+			end
+		end
+
+		def self.rehash2
 			Ngrep::Hash.new.clear
 			watch_list = Ngrep::WatchList.new
 			watch_list.load
@@ -25,12 +38,12 @@ module Ngrep
 		def initialize(args)
 			@filename = args[:filename] 
 			@current_date = ""
-			@current_project = ""
+			@current_project = nil
 			@storage = nil
 		end
 
 		def run
-			load_storage
+			#load_storage
 			parse_project
 			File.open(@filename).readlines.each_with_index do |line, i|
 				parse_date(line)
@@ -44,13 +57,13 @@ module Ngrep
 					#})
 					Word.create(
 						value: word, 
-						line_number: i, 
+						line_number: i+1, 
 						date: @current_date, 
 						project: @current_project,
 						file_path: @filename )
 				end
 			end
-			finalize
+			#finalize
 		end
 
 		def load_storage
@@ -74,11 +87,13 @@ module Ngrep
 		end
 
 		def parse_project
+			project_str=nil
 			@filename.match(/\/code\/(.+)\//) do |matches|
 				if matches[1]
-					@current_project = matches[1].split("/").first
+					project_str = matches[1].split("/").first
 				end
 			end
+			@current_project = project_str
 		end
 		
 		

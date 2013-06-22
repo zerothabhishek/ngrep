@@ -33,7 +33,18 @@ require File.expand_path("../db.rb", __FILE__)
 
 module Ngrep
 
+	@@env=:production
+
 	def self.root
 		File.expand_path("..",__FILE__)
 	end	
+
+	def self.env
+		@@env
+	end
+
+	def self.env=e
+		@@env=e
+	end
+
 end
