@@ -1,10 +1,9 @@
 class Ng2::WordDetail
 
-	attr_accessor :word, :project, :file_path, :line_no, :serialized_details
+	attr_accessor :word, :file_path, :line_no, :word_no, :serialized_details
 
 	def initialize(word, details={})
 		@word      = word
-		@project   = details[:project]
 		@file_path = details[:file_path]
 		@line_no   = details[:line_no]
 		@word_no   = details[:word_no]
@@ -25,9 +24,8 @@ class Ng2::WordDetail
 
 	# true if there's a word in the hash-db with the same file_path and line_no
 	def duplicate?
-		other = self.find(@word)
-		other &&
-		other.project   == self.project   &&
+		other = Ng2::WordDetail.find(@word).last
+		!other.nil? &&
 		other.file_path == self.file_path &&
 		other.line_no   == self.line_no   &&
 		other.word_no   == self.word_no
@@ -35,20 +33,15 @@ class Ng2::WordDetail
 
 	# serialize and save the word along with details to hash_db 
 	def save
-		save! unless duplicate?
-	end
-
-	def save!
-		str = serialize
-		Ng2::HashDb.set(@word, value)
+		Ng2::HashDb.add(@word, serialize)
 	end
 
 	def serialize
-		[@project, @file_path, @line_no, @word_no].join(",") # TODO: add escaping
+		[@file_path, @line_no, @word_no].join(",") # TODO: add escaping
 	end
 
 	def deserialize
-		@project, @file_path, @line_no, @word_no = @serialized_details.split(",") # TODO: add de-escaping
+		@file_path, @line_no, @word_no = @serialized_details.split(",") # TODO: add de-escaping
 	end
 
 end

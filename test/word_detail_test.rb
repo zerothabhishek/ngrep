@@ -92,10 +92,12 @@ class WordDetailTest < MiniTest::Test
 
 	def test_6
 		desc = '#serialize'
+		skip
 	end
 
 	def test_7
 		desc = '#deserialize'
+		skip
 	end
 
 	def empty_test_db
