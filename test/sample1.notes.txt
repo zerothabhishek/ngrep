@@ -1,0 +1,21 @@
+
+## 19oct2013
+
+Hello this is a sample. Let us see how it works
+
+## 20oct2013
+
+Another sample note. With some code:
+
+ 	def self.find(word)
+		Ng2::HashDb.get(word).map do |detail_str|
+			self.build(word, detail_str)
+		end
+	end
+
+
+
+
+
+
+
