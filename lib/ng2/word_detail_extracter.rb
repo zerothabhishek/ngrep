@@ -6,22 +6,22 @@ class Ng2::WordDetailExtracter
     from_lines File.readlines(path), file_path: path 
   end
 
-  def from_lines(lines, options)
-    i = options[:offset] || 0
+  def from_lines(lines, options={})
+    options[:offset] ||= 0
+    i = options[:offset]
     lines.map do |line|
       i += 1
       from_line(line, 
-        line_no: options[:offset] + i,
-        file_path: options[:path])
+        line_no: i,
+        file_path: options[:file_path])
     end.flatten
   end
 
-  def from_line(line, options)
+  def from_line(line, options={})
     j = 0
-    parse_words(line).map do |word|
+    parse_words(line).select{|word| word.size>0}.map do |word|
       j += 1
-      WordDetail.new(word, 
-        project:   parse_project(options[:file_path],
+      Ng2::WordDetail.new(word,
         file_path: options[:file_path],
         line_no:   options[:line_no],
         word_no:   j)
@@ -29,24 +29,15 @@ class Ng2::WordDetailExtracter
   end
 
   def parse_words(line)
-    line.split(/\s/)
+    line.split(/\s/).map{|word| remove_punctuations(word)}
   end
 
-  def parse_project(file_path)
-    return @project if @project
-    file_path.match(/\/code\/(.+)\//) do |matches|
-      @project = matches[1].split("/").first if matches[1]
-    end
-    @project
+  def remove_punctuations(word)
+    punctuation_marks = %w(, ; .)
+    last_index = word.size-1
+    word.chop! if punctuation_marks.include? word[last_index]
+    word
   end
-
-  #def parse_date(line)
-  # prev_date = @current_date
-  # line.match(/## (.+)/) do |matches|
-  #   parsed_date = Date.parse(matches[1]) rescue nil
-  # end
-  # @current_date = parsed_date || prev_date
-  #end
 
 end
 
