@@ -17,20 +17,20 @@ class WordDetailExtracterTest < MiniTest::Test
 	end
 
 	def test_2
-		desc = "#from_file: should give a WordDetail for Hello"
+		desc = "#from_file: should give a WordDetail for 'madness'"
 
 		word_details = Ng2::WordDetailExtracter.new.from_file(@sample_file)
-		assert word_details.any?{|word_detail| word_detail.word=="Hello"}, desc
+		assert word_details.any?{|word_detail| word_detail.word=="madness"}, desc
 	end
 
 	def test_3
 		desc = "#from_line: should give WordDetail objects for given line"
 
 		word_details = Ng2::WordDetailExtracter.new.from_line(@line)
-		assert_equal 'Madness',  word_details[0].word, desc
+		assert_equal 'madness',  word_details[0].word, desc
 		assert_equal 'this',     word_details[1].word, desc
 		assert_equal 'is',       word_details[2].word, desc
-		assert_equal 'Sparta',   word_details[3].word, desc
+		assert_equal 'sparta',   word_details[3].word, desc
 	end
 
 	def test_4

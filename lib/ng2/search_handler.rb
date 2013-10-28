@@ -3,7 +3,7 @@ class Ng2::SearchHandler
 
   # under consideration. Missing the uniqueness check
   # Other one is better because it can use threads easily
-  def search2(pattern, options) 
+  def search2(pattern, options)
     Ng2::WordDetail.find(pattern) do |word_detail|
       build_result(word_detail, options)
       show_result
@@ -11,6 +11,7 @@ class Ng2::SearchHandler
   end
 
   def search(pattern, options)
+    pattern = pattern.downcase
     find_words(pattern)
     filter_uniques
     show_results(options)
