@@ -18,7 +18,9 @@ class Ng2::WordDetail
 
 	def self.find(word)
 		Ng2::HashDb.get(word).map do |detail_str|
-			self.build(word, detail_str)
+			word_detail = self.build(word, detail_str)
+			yield word_detail  if block_given?
+			word_detail
 		end
 	end
 
@@ -43,5 +45,40 @@ class Ng2::WordDetail
 	def deserialize
 		@file_path, @line_no, @word_no = @serialized_details.split(",") # TODO: add de-escaping
 	end
+
+	def build_result(options={})
+		build_header + header_end(options) +
+		lines_from_file(options).
+			cleanup.
+			mark_result(options).   # mark line with the exact match
+			to_s
+	end
+
+	def build_header
+		file_path_small + ':' + @line_no.to_s
+	end
+
+	def file_path_small
+		@file_path.to_s.sub(File.expand_path('~'), '~')
+	end
+
+	def header_end(options={})
+		options[:pre].to_i==0 &&
+		options[:post].to_i==0 ?  ':' : ":\n "
+	end
+
+	def lines_from_file(options={})
+		pre = options[:pre].to_i
+		post = options[:post].to_i
+
+    lines = []
+    File.open(@file_path) do |f|
+      skip = @line_no.to_i - pre
+      skip.times{ f.gets }
+      num  = pre + post + 1
+      lines = (1..num).map{ f.gets }
+    end
+    ResultLines.new lines
+  end
 
 end

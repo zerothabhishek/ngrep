@@ -1,5 +1,7 @@
 
 require File.expand_path '../../lib/ng2.rb', __FILE__
+
+gem "minitest", '5.0.8'
 require 'minitest/autorun'
 
 ENV = 'test' unless defined? ENV
