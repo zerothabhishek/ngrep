@@ -37,10 +37,10 @@ class WordDetailExtracterTest < MiniTest::Test
 		desc = "#from_line: should give WordDetail objects with word_no"
 
 		word_details = Ng2::WordDetailExtracter.new.from_line(@line)
-		assert_equal 1, word_details[0].word_no, desc
-		assert_equal 2, word_details[1].word_no, desc
-		assert_equal 3, word_details[2].word_no, desc
-		assert_equal 4, word_details[3].word_no, desc
+		assert_equal 0, word_details[0].word_no, desc
+		assert_equal 1, word_details[1].word_no, desc
+		assert_equal 2, word_details[2].word_no, desc
+		assert_equal 3, word_details[3].word_no, desc
 	end
 
 	def test_5
