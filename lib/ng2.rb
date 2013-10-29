@@ -20,14 +20,6 @@ module Ng2
   		Ng2::SearchHandler.search(pattern, options)
   	end
 
-  	#def hash(options={})
-    #  Ng2::HashDb.setup
-    #  word_details = Ng2::WordDetailExtracter.new.from_file(File.expand_path options[:file])
-    #  word_details = word_details.select{|word_detail| !word_detail.duplicate? }
-    #  word_details.map(&:save)
-    #  Ng2::HashDb.teardown
-  	#end
-
     def hash(options={})
       Ng2::HashDb.setup
       Ng2::WordDetailExtracter.new.from_file(options[:file]) do |word_detail|
@@ -38,7 +30,12 @@ module Ng2
 
     def hash_all(options={})
       Ng2::HashDb.setup
-      Ng2::WatchHandler.list.each do |file|
+
+      list = Ng2::WatchHandler.list
+      puts "Starting to hash #{list.size} files..." if options[:verbose]
+
+      list.each do |file|
+        puts file if options[:verbose]
         begin 
           Ng2::WordDetailExtracter.new.from_file(file) do |word_detail|
             word_detail.save  unless word_detail.duplicate?
@@ -83,8 +80,14 @@ module Ng2
         puts file if options[:verbose]
         Ng2::WatchHandler.watch(file)
       end
-      puts "----> The watchlist:"  if options[:verbose]
-      puts Ng2::WatchHandler.list  if options[:verbose]
+      Ng2::HashDb.teardown
+    end
+
+    def info
+      Ng2::HashDb.setup
+      puts "Watchlist size: " + Ng2::WatchHandler.list.size.to_s + " files"
+      puts "Hashdb size: "    + Ng2::HashDb.size.to_s            + " keys"
+      puts "HashDb size: "    + Ng2::HashDb.db_scanner.size.to_s + " bytes"
       Ng2::HashDb.teardown
     end
 

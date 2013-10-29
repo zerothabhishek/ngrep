@@ -57,6 +57,13 @@ class Ng2::HashDb
 		@@db_scanner.clear
 	end
 
+	def self.size
+		count = 0
+		Ng2::HashDb.db_scanner.each_key{|k| count += 1 }
+		# Ng2::HashDb.db_scanner.size gives the size in bytes
+		count
+	end
+
 	def self.concat(existing_values, new_value)
 		arr = existing_values.push new_value.to_s
 		arr.flatten
