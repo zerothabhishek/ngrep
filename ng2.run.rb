@@ -1,3 +1,5 @@
+#!/Users/abhishekyadav/.rbenv/shims/ruby
+
 load File.expand_path '../lib/ng2.rb', __FILE__
 
 def clear_it
@@ -9,7 +11,11 @@ end
 def hash_it
 	#f = "/Users/abhishekyadav/code/ngrep-proj/notes.md"
 	f = "/Users/abhishekyadav/code/ngrep-proj/ng2/tmp/sample1.notes.txt"
-	Ng2.hash2 file: f
+	Ng2.hash file: f
+end
+
+def hash_all
+	Ng2.hash_all
 end
 
 def the_keys
@@ -37,10 +43,20 @@ def the_search
 	Ng2.search(ARGV[0])
 end
 
+def the_watchscan
+	Ng2.watchscan(ARGV[0], depth: ARGV[1], verbose: true)
+end
+
+def the_list
+	puts Ng2.watchlist
+end
+
 #the_keys
 #the_value
-#clear_it; hash_it
+#hash_it
 the_search
-
-
+#the_list
+#clear_it 
+#the_watchscan
+#hash_all
 

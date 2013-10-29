@@ -4,7 +4,7 @@ class Ng2::WatchHandler
 
 	def self.watch(file, options={})
 		load
-		@@watch_list.push(file)
+		@@watch_list.push(file) unless @@watch_list.include?(file)
 		@@watch_list.flatten!
 		save
 	end
