@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+cli_cmd = File.expand_path("../ngcli",__FILE__)
+
+if ARGV.size==0
+	cmd = "#{cli_cmd} help"
+else
+	argv_str = ARGV.join(' ')
+	cmd = "#{cli_cmd} search #{argv_str}"
+end
+
+puts `#{cmd}`

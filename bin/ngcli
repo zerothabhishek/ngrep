@@ -1,0 +1,90 @@
+#!/usr/bin/env ruby
+
+require "thor"
+Ng2Path = File.expand_path("../../lib/ng2.rb", __FILE__)
+
+class NgCli < Thor
+
+	include Thor::Actions
+
+	# ngcli [find] <pattern> -a <num-pre-lines> -b <num-post-lines> 
+	desc "search PATTERN", "search the given term"
+	option :pre, type: :numeric, aliases: :a
+	option :post, type: :numeric, aliases: :b 
+	def search(pattern)
+		require Ng2Path
+		Ng2.search(pattern, options)
+	end
+
+	# ngcli hash <file-name>
+	desc "hash", "rebuild the index for the FILE"
+	def hash(file)
+		require Ng2Path
+		Ng2.hash(file: file)
+	end
+
+	# ngcli hashall
+	desc "hashall", "rebuild the entire index"
+	option :verbose, type: :boolean, aliases: :v
+	def hashall
+		require Ng2Path
+		Ng2.hash_all(options)
+	end
+
+	# ngcli delete
+	desc "delete", "delete the hash-db"
+	def delete
+		if yes?("This will delete the hash-db. Continue? [n]")
+			require Ng2Path
+			Ng2.delete_hash
+		end
+	end
+
+	# ngcli info
+	desc "info", "lists the size of hash-db and watchlist"
+	def info
+		require Ng2Path
+		Ng2.info
+	end
+
+	# ngcli watchscan
+	desc "watchscan", "recursively scan the directory DIR for notes files and add them to watchlist"
+	option :depth, type: :numeric, aliases: :d
+	option :verbose, type: :boolean, aliases: :v
+	def watchscan(dir)
+		require Ng2Path
+		Ng2.watchscan(dir, options)
+	end
+
+	# ngcli watch <file-name>
+	desc "watch FILE", "adds FILE to watch list"
+	def watch(file)
+		require Ng2Path
+		Ng2.watch(file, options)
+	end
+
+	# ngcli unwatch <file-name>
+	desc "unwatch FILE", "removes file from watch list"
+	def unwatch(file)
+		require Ng2Path
+		Ng2.unwatch(file)
+	end
+
+	# ngcli watchlist
+	desc "watchlist", "shows the watch list"
+	def watchlist
+		require Ng2Path
+		Ng2.watchlist
+	end
+
+	# ngcli hi
+	desc "hi", "just loads the application"
+	def hi
+		require Ng2Path
+		puts "hi"
+	end
+
+end
+
+NgCli.start  # to make this a shell command
+
