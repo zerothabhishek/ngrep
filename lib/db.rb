@@ -16,6 +16,15 @@ module Ngrep
 			database_path = Ngrep::Config[Ngrep.env.to_sym][:db_file]
 			{adapter: 'sqlite3', database: database_path}			
 		end
+
+		def self.migrations
+			require File.expand_path("../db/create_words_migration.rb", __FILE__)
+			[Ngrep::CreateWordsMigration]
+		end
+
+		def self.run_migrations
+			self.migrations.map(&:run)
+		end
 		
 		
 	end

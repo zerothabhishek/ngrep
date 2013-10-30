@@ -4,6 +4,10 @@ Ngrep.env=:test
 Ngrep::Db.connect
 
 
+def setup_db
+	Ngrep::Db.run_migrations
+end
+
 def flush_db
 	Ngrep::Word.all.map(&:destroy)
 end
